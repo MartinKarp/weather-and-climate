@@ -44,7 +44,7 @@ from output       import makeoutput, write_output
 from microphysics import kessler, seifert
 
 # import global namelist variables
-from namelist_ex2 import imoist, imicrophys, irelax, idthdt, idbg, iprtcfl, \
+from namelist import imoist, imicrophys, irelax, idthdt, idbg, iprtcfl, \
                      nts, dt, iiniout, nout, iout,                      \
                      dx, nx, nx1, nb, nxb, nxb1, nz, nz1, nab,          \
                      rdcp, g, diff, diffabs, topotim, cp, itime

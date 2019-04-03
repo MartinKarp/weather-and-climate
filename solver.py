@@ -44,7 +44,7 @@ from output       import makeoutput, write_output
 from microphysics import kessler, seifert
 
 # import global namelist variables
-from namelist import imoist, imicrophys, irelax, idthdt, idbg, iprtcfl, \
+from namelist_ex2 import imoist, imicrophys, irelax, idthdt, idbg, iprtcfl, \
                      nts, dt, iiniout, nout, iout,                      \
                      dx, nx, nx1, nb, nxb, nxb1, nz, nz1, nab,          \
                      rdcp, g, diff, diffabs, topotim, cp, itime
@@ -328,7 +328,7 @@ t0 = tm()
 for its in range(1,int(nts+1)):
     # calculate time
     time = its*dt
-    
+
     if itime == 1:
         if idbg == 1 or idbg == 0:
             print('========================================================\n')
@@ -353,9 +353,9 @@ for its in range(1,int(nts+1)):
 
     # *** Exercise 2.1 isentropic mass density ***
     # *** time step for isentropic mass density ***
-    # *** edit here ***
 
 
+    snew = prog_isendens(sold,snow,unow,dtdx)
 
 
     #
@@ -376,11 +376,11 @@ for its in range(1,int(nts+1)):
 
 
     #
-    # *** Exercise 4.1 / 5.1 moisture scalars *** 
+    # *** Exercise 4.1 / 5.1 moisture scalars ***
 
     # *** Exercise 2.1 velocity ***
     # *** time step for momentum ***
-    # *** edit here ***
+    unew = prog_velocity(uold,unow,mtg,dtdx)
 
 
 
@@ -439,8 +439,7 @@ for its in range(1,int(nts+1)):
 
     # *** Exercise 2.2 (also 1.4) Diagnostic computation of pressure ***
     # *** Diagnostic computation of pressure ***
-    # *** edit here ***
-
+    prs = diag_pressure(prs0,prs,snew)
 
 
 
@@ -450,7 +449,7 @@ for its in range(1,int(nts+1)):
     # *** Exercise 2.2 (also 1.5) Diagnostic computation of Montgomery ***
     # *** Calculate Exner function and Montgomery potential ***
     # *** edit here ***
-
+    exn, mtg = diag_montgomery(prs,mtg,th0,topo,topofact)
 
 
 
@@ -471,7 +470,7 @@ for its in range(1,int(nts+1)):
         # *** Exercise 4.1 Moisture ***
         # *** Clipping of negative values ***
         # *** Edit here ***
-        
+
         if idbg == 1:
             print("Implement moisture clipping")
 
@@ -484,12 +483,12 @@ for its in range(1,int(nts+1)):
         # *** Exercise 4.2 Kessler ***
         # *** Kessler scheme ***
         # *** Edit here ***
-        
+
         if idbg == 1:
             print("Add function to Kessler microphysics")
 
         # add call of kessler, which computes latent heat tmp,
-        # subfunction here: 
+        # subfunction here:
 
 
 
@@ -501,7 +500,7 @@ for its in range(1,int(nts+1)):
         # *** Exercise 5.1 Two Moment Scheme ***
         # *** Two Moment Scheme ***
         # *** Edit here ***
-        
+
         if idbg == 1:
             print("Add function call to two moment microphysics")
 
@@ -536,8 +535,12 @@ for its in range(1,int(nts+1)):
     # *** Exercise 2.1 / 4.1 / 5.1 ***
     # *** exchange isentropic mass density and velocity ***
     # *** (later also qv,qc,qr,nc,nr) ***
-    # *** edit here ***
-    #
+
+    sold = snow
+    snow = snew
+
+    uold = unow
+    unow = unew
 
 
     if imoist == 1:

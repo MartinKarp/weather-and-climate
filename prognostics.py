@@ -17,13 +17,9 @@ def prog_isendens(sold,snow,unow,dtdx,dthetadt=None):
 
     # *** Exercise 2.1/5.2 isentropic mass density ***
     # *** time step for isentropic mass density ***
-    # *** edit here ***
-    
-    
-
-    #
+    for i in range(nb, nx + nb):
+        snew[i,:] = sold[i,:]-dtdx*(0.5*snow[i+1,:]*(unow[i+1,:]+unow[i+2,:])-0.5*snow[i-1,:]*(unow[i-1,:]+unow[i,:]))
     # *** Exercise 2.1/5.2 isentropic mass density ***
-
     return snew
 
 def prog_velocity(uold,unow,mtg,dtdx,dthetadt=None):
@@ -38,15 +34,12 @@ def prog_velocity(uold,unow,mtg,dtdx,dthetadt=None):
 
     # Declare
     unew = np.zeros((nx+1+2*nb,nz))
-    
+
     # *** Exercise 2.1/5.2 velocity ***
     # *** time step for momentum ***
-    # *** edit here ***
-   
-    
-    #
+    for i in range(nb,nx+nb+1):
+        unew[i,:] = uold[i,:] - dtdx*unow[i,:]*(unow[i+1,:]-unow[i-1,:])-2*dtdx*(mtg[i,:]-mtg[i-1,:])
     # *** Exercise 2.1/5.2 velocity ***
-
     return unew
 
 def prog_moisture(unow,qvold,qcold,qrold,
@@ -69,13 +62,13 @@ def prog_moisture(unow,qvold,qcold,qrold,
     qrnew = np.zeros((nx+2*nb,nz))
 
     # *** Exercise 4.1/5.2 moisture advection ***
-    # *** edit here *** 
-    
+    # *** edit here ***
+
 
 
     #
     # *** Exercise 4.1/5.2  ***
-    
+
     return qvnew,qcnew,qrnew
 
 
@@ -96,7 +89,7 @@ def prog_numdens(unow,ncold,nrold,ncnow,nrnow,ncnew,nrnew,dtdx,dthetadt=None):
     nrnew = np.zeros((nx+2*nb,nz))
 
     # *** Exercise 5.1/5.2 number densities ***
-    # *** edit here *** 
+    # *** edit here ***
 
 
 

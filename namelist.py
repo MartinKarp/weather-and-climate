@@ -54,7 +54,7 @@ nb      = 2                     # number of boundary points on each side
 
 # Print options
 #-------------------------------------------------
-idbg    = 0                     # print debugging text (0 = not print, 1 = print)
+idbg    = 0                 # print debugging text (0 = not print, 1 = print)
 iprtcfl = 1                     # print Courant number (0 = not print, 1 = print)
 itime   = 1                     # print computation time (0 = not print, 1 = print)
 

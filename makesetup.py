@@ -100,8 +100,8 @@ def makeprofile(sold,snow,uold,unow,mtg,mtgnew,qvold=0,qvnow=0,
         #
 
         # *** edit here ...
-        
-    
+
+
         # *** Exercise 3.3 Downslope windstorm ***
     else:
         if idbg == 1:
@@ -117,7 +117,7 @@ def makeprofile(sold,snow,uold,unow,mtg,mtgnew,qvold=0,qvnow=0,
         # *** Exercise 4.1 Initial Moisture profile ***
         # *** define new indices and create the profile ***
         # *** for rh0; then use function rrmixv1 to compute qv0 ***
-        
+
 
         # *** edit here ...
 
@@ -142,7 +142,7 @@ def makeprofile(sold,snow,uold,unow,mtg,mtgnew,qvold=0,qvnow=0,
     unow =   u0*np.ones_like(uold,dtype = np.float)
 
     if imoist==1:
-        #if imicrophys!=0: 
+        #if imicrophys!=0:
         qvold = qv0*np.ones_like(qvold,dtype = np.float)
         qvnow = qv0*np.ones_like(qvold,dtype = np.float)
         qcold = qc0*np.ones_like(qcold,dtype = np.float)

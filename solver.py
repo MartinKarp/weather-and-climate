@@ -274,9 +274,8 @@ for k in range(1,nz1):
 tau = diff*np.ones(nz)
 
 # *** Exercise 3.1 height-dependent diffusion coefficient ***
-# *** edit here ***
-#
-
+for k in range(nz - nab, nz):
+    tau[k] = diff + (diffabs - diff)*np.sin(0.5 * np.pi * (k - (nz - nab - 1)) / nab)**2
 
 
 
@@ -355,7 +354,7 @@ for its in range(1,int(nts+1)):
     # *** time step for isentropic mass density ***
 
 
-    snew = prog_isendens(sold,snow,unow,dtdx)
+    snew = prog_isendens(sold,snow,unow,dtdx,dthetadt=dthetadt)
 
 
     #
@@ -367,20 +366,17 @@ for its in range(1,int(nts+1)):
     #
 
     if imoist == 1:
-        if idbg == 1:
-            print("Add function call to prog_moisture")
-
-    # *** edit here ***
-
-
-
+        qvnew, qcnew, qrnew = prog_moisture(unow,qvold,qcold,qrold,
+                          qvnow,qcnow,qrnow,qvnew,qcnew,qrnew,dtdx,dthetadt=dthetadt)
+        if imicrophys == 2:
+            ncnew, nrnew = prog_numdens(unow,ncold,nrold,ncnow,nrnow,ncnew,nrnew,dtdx,dthetadt=dthetadt)
 
     #
     # *** Exercise 4.1 / 5.1 moisture scalars ***
 
     # *** Exercise 2.1 velocity ***
     # *** time step for momentum ***
-    unew = prog_velocity(uold,unow,mtg,dtdx)
+    unew = prog_velocity(uold,unow,mtg,dtdx,dthetadt=dthetadt)
 
 
 
@@ -469,27 +465,31 @@ for its in range(1,int(nts+1)):
 
         # *** Exercise 4.1 Moisture ***
         # *** Clipping of negative values ***
-        # *** Edit here ***
 
-        if idbg == 1:
-            print("Implement moisture clipping")
+        qvnew[qvnew < 0] = 0
+        qcnew[qcnew < 0] = 0
+        qrnew[qrnew < 0] = 0
+
 
 
 
         # *** Exercise 4.1 Moisture ***
+    if imicrophys == 2:
+        nrnew[nrnew < 0] = 0
+        ncnew[ncnew < 0] = 0
+
 
     if imoist == 1 and imicrophys == 1:
 
         # *** Exercise 4.2 Kessler ***
         # *** Kessler scheme ***
-        # *** Edit here ***
 
         if idbg == 1:
             print("Add function to Kessler microphysics")
 
         # add call of kessler, which computes latent heat tmp,
-        # subfunction here:
 
+        tmp, qvnew, qcnew, qrnew, tot_prec, prec = kessler(th0,prs,snew,qvnew,qcnew,qrnew,exn,zhtnow,tot_prec,prec)
 
 
 
@@ -499,12 +499,14 @@ for its in range(1,int(nts+1)):
 
         # *** Exercise 5.1 Two Moment Scheme ***
         # *** Two Moment Scheme ***
-        # *** Edit here ***
 
+        tmp,qvnew,qcnew,qrnew,tot_prec,prec,ncnew,nrnew = seifert(unew,th0,prs,snew,qvnew,qcnew,qrnew,exn,
+                                                                    zhtold,zhtnow,tot_prec,prec,ncnew,nrnew,dthetadt=dthetadt)
+
+        #nrnew[nrnew < 0] = 0
+        #ncnew[ncnew < 0] = 0
         if idbg == 1:
             print("Add function call to two moment microphysics")
-
-
 
           # *** Exercise 5.1 Two Moment Scheme ***
 
@@ -543,13 +545,26 @@ for its in range(1,int(nts+1)):
     unow = unew
 
 
+
     if imoist == 1:
         if idbg == 1:
             print("exchange moisture variables")
 
+        qvold = qvnow
+        qvnow = qvnew
+        qcold = qcnow
+        qcnow = qcnew
+        qrold = qrnow
+        qrnow = qrnew
+
         if imicrophys == 2:
             if idbg == 1:
                 print("exchange number densitiy variables")
+
+            ncold = ncnow
+            ncnow = ncnew
+            nrold = nrnow
+            nrnow = nrnew
 
     #
     # *** Exercise 2.1 / 4.1 / 5.1 ***

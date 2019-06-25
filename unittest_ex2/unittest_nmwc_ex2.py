@@ -76,14 +76,14 @@ class AdiabaticTest(unittest.TestCase):
     def test_prog_isendens(self):
 
         snew = prog_isendens(self.sold, self.snow, self.unow, self.dtdx)
-        self.__assertArrayEqual(snew[nb:nx-nb, 3], self.snew_verif[nb:nx-nb, 3])
+        self.__assertArrayEqual(snew[nb:nx+nb, :], self.snew_verif[nb:nx+nb, :])
 
 
  
     def test_prog_velocity(self):
 
         unew = prog_velocity(self.uold, self.unow, self.mtg_old, self.dtdx)
-        self.__assertArrayEqual(unew[nb:(nx+1-nb), 3], self.unew_verif[nb:(nx+1-nb), 3])   
+        self.__assertArrayEqual(unew[nb:(nx+1+nb), :], self.unew_verif[nb:(nx+1+nb), :])   
 
 
  

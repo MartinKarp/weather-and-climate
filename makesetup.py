@@ -97,9 +97,7 @@ def makeprofile(sold,snow,uold,unow,mtg,mtgnew,qvold=0,qvnow=0,
             print('Using wind shear profile ...\n')
         # *** Exercise 3.3 Downslope windstorm ***
         # *** use indices k_shl, k_sht, and wind speeds u00_sh, u00
-        #
 
-        # *** edit here ...
 
 
         # *** Exercise 3.3 Downslope windstorm ***
@@ -117,10 +115,13 @@ def makeprofile(sold,snow,uold,unow,mtg,mtgnew,qvold=0,qvnow=0,
         # *** Exercise 4.1 Initial Moisture profile ***
         # *** define new indices and create the profile ***
         # *** for rh0; then use function rrmixv1 to compute qv0 ***
+        kw = 10
+        kc = 11
+        rhmax = 0.98
 
-
-        # *** edit here ...
-
+        for k in range(kc-kw,kc+kw):
+            rh0[k] = rhmax * np.cos(np.abs(k-kc)*np.pi/(2*kw))**2
+            qv0[k] = rrmixv1(0.5 * (prs0[k] + prs0[k+1]) / 100, 0.5 * (th0[k] / cp * exn0[k] + th0[k+1] / cp * exn0[k+1]), rh0[k], 2)
 
 
         # *** Exercise 4.1 Initial Moisture profile ***
@@ -142,9 +143,14 @@ def makeprofile(sold,snow,uold,unow,mtg,mtgnew,qvold=0,qvnow=0,
     unow =   u0*np.ones_like(uold,dtype = np.float)
 
     if imoist==1:
+        # With initial pertubation
+        #per = np.sin(np.linspace(0,2*np.pi,nxb))**2
+        #w/o
+        #per =np.ones(nxb);
         #if imicrophys!=0:
-        qvold = qv0*np.ones_like(qvold,dtype = np.float)
-        qvnow = qv0*np.ones_like(qvold,dtype = np.float)
+        qvold = qv0 * np.ones_like(qvold,dtype = np.float)
+        qvnow = qv0 * np.ones_like(qvold,dtype = np.float)
+
         qcold = qc0*np.ones_like(qcold,dtype = np.float)
         qcnow = qc0*np.ones_like(qcold,dtype = np.float)
         qrold = qr0*np.ones_like(qrold,dtype = np.float)

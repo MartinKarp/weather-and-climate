@@ -134,8 +134,8 @@ def update_im_back(i, data, ax, fig):
 def update_im_forward(i, data, ax, fig):
     global timestep
     timestep = timestep + 1
-    if timestep > data[data.keys()[0]].shape[0] - 1:
-        timestep = timestep - data[data.keys()[0]].shape[0]
+    if timestep > data['time'].shape[0] - 1:
+        timestep = timestep - data['time'].shape[0]
     slider.set_val(var.time[timestep])
     ax.cla()
     im = plot_figure(varnames, var, timestep, False)
